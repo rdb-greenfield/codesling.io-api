@@ -1,13 +1,22 @@
-import { globalQueryHelper } from '../../lib/components/';
+import { globalQueryHelper } from "../../lib/components/";
 import {
   addTestCaseHelper,
   fetchAllTestCasesHelper
-} from './testCasesSQLHelpers';
+} from "./testCasesSQLHelpers";
 
 export const testCaseQuery = async (payload, url) => {
-  if (url === '/') {
-    return await globalQueryHelper(payload, addTestCaseHelper, 'addTestCaseHelper', ['content', 'challenge_id']);
+  if (url === "/") {
+    return await globalQueryHelper(
+      payload,
+      addTestCaseHelper,
+      "addTestCaseHelper",
+      ["tests", "challenge_id"]
+    );
   } else {
-    return await globalQueryHelper(payload, fetchAllTestCasesHelper, 'fetchAllTestCasesHelper');
+    return await globalQueryHelper(
+      payload,
+      fetchAllTestCasesHelper,
+      "fetchAllTestCasesHelper"
+    );
   }
 };

@@ -1,14 +1,23 @@
-import { globalQueryHelper } from '../../lib/components/';
+import { globalQueryHelper } from "../../lib/components/";
 import {
   addChallengeHelper,
   fetchChallengeHelper
-} from './challengeSQLHelpers';
+} from "./challengeSQLHelpers";
 
 export const challengeQuery = async (payload, url) => {
-  if (url === '/addChallenge') {
-    return await globalQueryHelper(payload, addChallengeHelper, 'addChallengeHelper', ['title', 'content', 'difficulty']);
+  if (url === "/addChallenge") {
+    return await globalQueryHelper(
+      payload,
+      addChallengeHelper,
+      "addChallengeHelper",
+      ["title", "content", "difficulty", "fn_name"]
+    );
   } else {
-    return await globalQueryHelper(payload, fetchChallengeHelper, 'fetchChallengeHelper');
+    return await globalQueryHelper(
+      payload,
+      fetchChallengeHelper,
+      "fetchChallengeHelper"
+    );
   }
 };
 

@@ -22,6 +22,7 @@ import {
  *
  */
 const clientReady = ({ io, client, room }, payload) => {
+  // payload contains the challenge object
   success('client ready heard');
   serverInitialState({ io, client, room }, payload);
 };
@@ -30,14 +31,24 @@ const clientOneUpdate = ({ io, client, room }, payload) => {
   const { text, player } = payload;
   success('client update heard. payload.text = ', payload);
   room.set('playerOne.text', text);
-  clientOneServerChanged({ io, client, room, player });
+  clientOneServerChanged({
+    io,
+    client,
+    room,
+    player,
+  });
 };
 
 const clientTwoUpdate = ({ io, client, room }, payload) => {
   const { text, player } = payload;
   success('client update heard. payload.text = ', payload);
   room.set('playerTwo.text', text);
-  clientTwoServerChanged({ io, client, room, player });
+  clientTwoServerChanged({
+    io,
+    client,
+    room,
+    player,
+  });
 };
 
 const clientDisconnect = ({ io, room }) => {
