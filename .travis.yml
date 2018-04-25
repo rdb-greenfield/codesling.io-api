@@ -20,6 +20,8 @@ install:
 before_script:
   # create db
   - psql -c 'create database codesling;' -U postgres
+  - psql -c "create user root with superuser password '';" -U postgres
+
   # setup environment
   - yarn
   - yarn buildEnv
