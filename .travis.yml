@@ -28,7 +28,6 @@ before_script:
   - yarn setup:rest-server
   - yarn setup:socket-server
   - yarn setup:services/coderunner-service
-  - createuser root
   - yarn db:setup:rest-server
 
 script:
