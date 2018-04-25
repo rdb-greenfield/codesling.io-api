@@ -15,10 +15,8 @@ services:
   - postgresql
 
 # begin build steps
-
 before_install:
 install:
-
 before_script:
   # create db
   - psql -c 'create database codesling;' -U postgres
@@ -39,7 +37,6 @@ after_failure:
 after_script:
 
 # deployment options
-
 before_deploy:
 deploy:
 after_deploy:
