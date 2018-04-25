@@ -7,7 +7,7 @@ language: node_js
 
 # specify language options
 node_js:
-  - "iojs"
+  # - "iojs"
   - "9"
 
 # enable services
@@ -32,7 +32,7 @@ before_script:
   - yarn db:setup:rest-server
 
 script:
-  - yarn 
+  - yarn start
 
 after_success:
 after_failure:
