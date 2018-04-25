@@ -1,18 +1,18 @@
-require('dotenv').config();
+require("dotenv").config();
 
-import db from '../../config/database';
-import {
-  success,
-  error
-} from '../log';
+import db from "../../config/database";
+import { success, error } from "../log";
 
-const database = process.env.NODE_ENV === 'production' ? process.env.AWS_DATABASE : process.env.LOCAL_DATABASE;
+const database =
+  process.env.NODE_ENV === "production"
+    ? process.env.AWS_DATABASE
+    : process.env.LOCAL_DATABASE;
 
 /**
  * SQL statements for syncing and dropping tables
- * 
+ *
  * Used in npm script `db:setup:rest-server`
- * 
+ *
  * Database
  * Users
  * Challenges
@@ -26,34 +26,28 @@ const database = process.env.NODE_ENV === 'production' ? process.env.AWS_DATABAS
 // database SQL statements to create, drop, and use a database
 export const createDatabase = async () => {
   try {
-    await db.query(
-      `CREATE DATABASE ${database}`
-    );
-    success('successfully created database ', database);
+    await db.query(`CREATE DATABASE ${database}`);
+    success("successfully created database ", database);
   } catch (err) {
-    error('error creating database ', err);
+    error("error creating database ", err);
   }
 };
 
 export const dropDatabase = async () => {
   try {
-    await db.query(
-      `DROP DATABASE IF EXISTS ${database}`
-    );
-    success('successfully dropped database ', database);
+    await db.query(`DROP DATABASE IF EXISTS ${database}`);
+    success("successfully dropped database ", database);
   } catch (err) {
-    error('error dropping database ', err);
+    error("error dropping database ", err);
   }
 };
 
 export const useDatabase = async () => {
   try {
-    await db.query(
-      `USE IF EXISTS ${database}`
-    );
-    success('successfully using database ', database);
+    await db.query(`USE IF EXISTS ${database}`);
+    success("successfully using database ", database);
   } catch (err) {
-    error('error using database ', err);
+    error("error using database ", err);
   }
 };
 
@@ -76,20 +70,18 @@ export const createUserTable = async () => {
       )
       `
     );
-    success('successfully created users table');
+    success("successfully created users table");
   } catch (err) {
-    error('error creating users table ', err)
+    error("error creating users table ", err);
   }
 };
 
 export const dropUserTable = async () => {
   try {
-    await db.query(
-      `DROP TABLE IF EXISTS users`
-    );
-    success('successfully dropped users table');
+    await db.query(`DROP TABLE IF EXISTS users`);
+    success("successfully dropped users table");
   } catch (err) {
-    error('error dropping users table ', err);
+    error("error dropping users table ", err);
   }
 };
 
@@ -106,25 +98,24 @@ export const createChallengeTable = async () => {
         content VARCHAR(255) NOT NULL,
         difficulty INT NOT NULL,
         rating INT,
+        fn_name VARCHAR(50) NOT NULL,
         CONSTRAINT challenges_pk 
           PRIMARY KEY(id)
       )
       `
     );
-    success('successfully created challenges table');
+    success("successfully created challenges table");
   } catch (err) {
-    error('error creating challenges table ', err);
+    error("error creating challenges table ", err);
   }
 };
 
 export const dropChallengeTable = async () => {
   try {
-    await db.query(
-      `DROP TABLE IF EXISTS challenges`
-    );
-    success('successfully dropped challenges table');
+    await db.query(`DROP TABLE IF EXISTS challenges`);
+    success("successfully dropped challenges table");
   } catch (err) {
-    error('error dropping challenges table ', err);
+    error("error dropping challenges table ", err);
   }
 };
 
@@ -149,19 +140,17 @@ export const createUsersChallengesTable = async () => {
       )
       `
     );
-    success('succesfully created usersChallenges table')
+    success("succesfully created usersChallenges table");
   } catch (err) {
-    error('error creating usersChallenges table ', err);
+    error("error creating usersChallenges table ", err);
   }
 };
 
 export const dropUsersChallengesTable = async () => {
   try {
-    await db.query(
-      `DROP TABLE IF EXISTS usersChallenges`
-    );
+    await db.query(`DROP TABLE IF EXISTS usersChallenges`);
   } catch (err) {
-    error('error dropping users-challenges table ', err);
+    error("error dropping users-challenges table ", err);
   }
 };
 
@@ -194,20 +183,18 @@ export const createHistoryTable = async () => {
       )
       `
     );
-    success('successfully created histories table');
+    success("successfully created histories table");
   } catch (err) {
-    error('error creating histories table ', err);
+    error("error creating histories table ", err);
   }
 };
 
 export const dropHistoryTable = async () => {
   try {
-    await db.query(
-      `DROP TABLE IF EXISTS histories`
-    );
-    success('successfully dropped histories table');
+    await db.query(`DROP TABLE IF EXISTS histories`);
+    success("successfully dropped histories table");
   } catch (err) {
-    error('error dropping histories table ', err);
+    error("error dropping histories table ", err);
   }
 };
 
@@ -220,7 +207,7 @@ export const createTestCaseTable = async () => {
       CREATE TABLE IF NOT EXISTS testCases
       (
         id SERIAL,
-        content VARCHAR(255) NOT NULL,
+        tests VARCHAR(255) NOT NULL,
         challenge_id INT NOT NULL,
         CONSTRAINT testCases_pk
           PRIMARY KEY(id),
@@ -230,20 +217,18 @@ export const createTestCaseTable = async () => {
       )
       `
     );
-    success('successfully created test cases table');
+    success("successfully created test cases table");
   } catch (err) {
-    error('error creating test cases table ', err);
+    error("error creating test cases table ", err);
   }
 };
 
 export const dropTestCaseTable = async () => {
   try {
-    await db.query(
-      `DROP TABLE IF EXISTS testCases`
-    );
-    success('successfully dropped test cases table');
+    await db.query(`DROP TABLE IF EXISTS testCases`);
+    success("successfully dropped test cases table");
   } catch (err) {
-    error('error dropping test cases table ', err);
+    error("error dropping test cases table ", err);
   }
 };
 
@@ -267,20 +252,18 @@ export const createSabotageTable = async () => {
       )
       `
     );
-    success('successfully created sabotages table');
+    success("successfully created sabotages table");
   } catch (err) {
-    error('error creating sabotages table ', err);
+    error("error creating sabotages table ", err);
   }
 };
 
 export const dropSabotageTable = async () => {
   try {
-    await db.query(
-      `DROP TABLE IF EXISTS sabotages`
-    );
-    success('successfully dropped sabotages table');
+    await db.query(`DROP TABLE IF EXISTS sabotages`);
+    success("successfully dropped sabotages table");
   } catch (err) {
-    error('error dropping sabotages table ', err);
+    error("error dropping sabotages table ", err);
   }
 };
 
@@ -303,21 +286,19 @@ export const createFriendTable = async () => {
         FOREIGN KEY(friend_id) REFERENCES users(id)
       )
       `
-    )
-    success('successfully created friends table');
+    );
+    success("successfully created friends table");
   } catch (err) {
-    error('error creating friends table ', err);
+    error("error creating friends table ", err);
   }
 };
 
 export const dropFriendTable = async () => {
   try {
-    await db.query(
-      `DROP TABLE IF EXISTS friends`
-    )
-    success('successfully dropped friends table');
+    await db.query(`DROP TABLE IF EXISTS friends`);
+    success("successfully dropped friends table");
   } catch (err) {
-    error('error dropping friends table');
+    error("error dropping friends table");
   }
 };
 
@@ -341,20 +322,18 @@ export const createMessageTable = async () => {
         FOREIGN KEY(sender_id) REFERENCES users(id)
       )
       `
-    )
-    success('successfully created messages table');
+    );
+    success("successfully created messages table");
   } catch (err) {
-    error('error creating messages table ', err);
+    error("error creating messages table ", err);
   }
 };
 
 export const dropMessageTable = async () => {
   try {
-    await db.query(
-      `DROP TABLE IF EXISTS messages`
-    )
-    success('successfully dropped messages table');
+    await db.query(`DROP TABLE IF EXISTS messages`);
+    success("successfully dropped messages table");
   } catch (err) {
-    error('error dropping messages table ', err);
+    error("error dropping messages table ", err);
   }
 };
