@@ -6,6 +6,14 @@ import { after } from 'lodash';
 
 import clientEvents from '../src/clientEvents';
 
+const text =
+`function hello() {
+  console.log('hello!');
+}
+
+hello();
+`;
+
 dotenv.config();
 dotenv.load();
 
@@ -37,10 +45,11 @@ describe('Client interactions', () => {
   // Expects people to be able to connect to the socket-server
   test('Should add a new user to a room and receive the same text', async (done) => {
     done = after(2, done);
-    expect.assertions(4);
-    const handler = (text) => {
+    expect.assertions(6);
+    const handler = (payload) => {
       try {
-        expect(text.text).toMatchSnapshot();
+        expect(payload.playerOneText).toMatchSnapshot();
+        expect(payload.playerTwoText).toMatchSnapshot();
         // make sure real test above does not throw
         expect(true).toBe(true);
       } catch (e) {
@@ -52,14 +61,14 @@ describe('Client interactions', () => {
     client1.on('server.initialState', handler);
     client2.on('server.initialState', handler);
 
-    client1.emit('client.ready');
-    client2.emit('client.ready');
+    client1.emit('client.ready', { challenge: '' });
+    client2.emit('client.ready', { challenge: '' });
   });
 
   // Expects clients to be able to connect with one another
   test('Should be able to hear emissions from other clients', (done) => {
     expect.assertions(2);
-    client2.on('server.changed', (payload) => {
+    client2.on('serverOne.changed', (payload) => {
       try {
         expect(payload.text).toMatchSnapshot();
         expect(true).toBe(true);
@@ -68,7 +77,7 @@ describe('Client interactions', () => {
       }
       done();
     });
-    client1.emit('client.update', { text: 'console.log("Hello, World!")' });
+    client1.emit('clientOne.update', { text: 'console.log("Hello, World!")' });
   });
 
   test('Should be able to run code and have both clients receive stdout', (done) => {
@@ -84,12 +93,12 @@ describe('Client interactions', () => {
       done();
     };
     client1.on('server.run', serverRunHandler);
-    client2.on('server.run', serverRunHandler)
-    client1.emit('client.run');
+    client2.on('server.run', serverRunHandler);
+    client1.emit('client.run', { text, player: 1 });
   });
 
   // Expects clients to disconnect
-  test('Client should have disconnected', done => {
+  test('Client should have disconnected', (done) => {
     expect.assertions(1);
     client1.on('server.leave', () => {
       // ensures server.leave is heard for other room clients

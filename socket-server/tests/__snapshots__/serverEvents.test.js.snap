@@ -9,3 +9,5 @@ exports[`All server events should be functions all server events should be a fun
 exports[`All server events should be functions all server events should be a function 4`] = `"function"`;
 
 exports[`All server events should be functions all server events should be a function 5`] = `"function"`;
+
+exports[`All server events should be functions all server events should be a function 6`] = `"function"`;

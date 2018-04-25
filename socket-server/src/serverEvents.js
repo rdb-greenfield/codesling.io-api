@@ -3,7 +3,7 @@
  *  Server emissions
  *
  */
-export const serverInitialState = ({ client, room }, { challenge, player }) => {
+export const serverInitialState = ({ client, room }, { challenge }) => {
   if (!room.get('challenge')) {
     room.set('challenge', challenge);
     client.emit('server.initialState', {

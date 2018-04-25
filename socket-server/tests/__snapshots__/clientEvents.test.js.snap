@@ -9,3 +9,5 @@ exports[`All client event handlers should be functions all client events should 
 exports[`All client event handlers should be functions all client events should be a function 4`] = `"function"`;
 
 exports[`All client event handlers should be functions all client events should be a function 5`] = `"function"`;
+
+exports[`All client event handlers should be functions all client events should be a function 6`] = `"function"`;

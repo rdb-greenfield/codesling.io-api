@@ -18,14 +18,40 @@ hello();
 "
 `;
 
-exports[`Client interactions Should be able to hear emissions from other clients 1`] = `"console.log(\\"Hello, World!\\")"`;
+exports[`Client interactions Should add a new user to a room and receive the same text 3`] = `
+"function hello() {
+  console.log('hello!');
+}
 
-exports[`Client interactions Should be able to run code and have both clients receive stdout 1`] = `
-"Hello, World!
+hello();
 "
 `;
 
-exports[`Client interactions Should be able to run code and have both clients receive stdout 2`] = `
-"Hello, World!
+exports[`Client interactions Should add a new user to a room and receive the same text 4`] = `
+"function hello() {
+  console.log('hello!');
+}
+
+hello();
 "
+`;
+
+exports[`Client interactions Should be able to hear emissions from other clients 1`] = `"console.log(\\"Hello, World!\\")"`;
+
+exports[`Client interactions Should be able to run code and have both clients receive stdout 1`] = `
+Object {
+  "console": Array [
+    "hello!",
+  ],
+  "result": "null",
+}
+`;
+
+exports[`Client interactions Should be able to run code and have both clients receive stdout 2`] = `
+Object {
+  "console": Array [
+    "hello!",
+  ],
+  "result": "null",
+}
 `;
