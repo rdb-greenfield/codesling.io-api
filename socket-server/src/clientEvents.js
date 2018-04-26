@@ -58,11 +58,12 @@ const clientDisconnect = ({ io, room }) => {
 
 const clientRun = async ({ io, room }, payload) => {
   success('running code from client. room.get("text") = ', room.get('text'));
-  const { text, player } = payload;
+  const {
+    text, player, tests, fnName,
+  } = payload;
   const url = process.env.CODERUNNER_SERVICE_URL;
-
   try {
-    const { data } = await axios.post(`${url}/submit-code`, { code: text });
+    const { data } = await axios.post(`${url}/submit-code`, { code: text, tests, fnName });
     const stdout = data;
     serverRun({ io, room }, { stdout, player });
   } catch (e) {

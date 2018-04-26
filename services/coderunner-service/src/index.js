@@ -2,6 +2,7 @@ import Sandbox from 'sandbox';
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import _ from 'lodash';
 
 import { success } from './lib/log';
 
@@ -13,11 +14,24 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.post('/submit-code', (req, res) => {
-  const { code } = req.body;
-  s.run(code, (output) => {
-    console.log(output);
-    res.status(200).send(output);
-  });
+  const { code, tests, fnName } = req.body;
+  if (!fnName) {
+    s.run(code, (output) => {
+      res.status(200).send(output);
+    });
+  } else {
+    const answer = `${code}\n${fnName}(${tests.split('\n')[0]});`;
+    s.run(answer, (output) => {
+      if (_.isEqual(JSON.parse(output.result), JSON.parse(tests.split('\n')[1]))) {
+        output.result = 'WINNER!';
+        res.status(200).send(output);
+      } else {
+        s.run(code, (output) => {
+          res.status(200).send(output);
+        });
+      }
+    });
+  }
 });
 
 app.listen(PORT, success(`coderunner-service is listening on port ${PORT}`));
