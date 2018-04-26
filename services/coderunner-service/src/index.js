@@ -18,12 +18,10 @@ app.post('/submit-code', (req, res) => {
   const answer = `${code}\n${fnName}(${tests.split('\n')[0]});`;
   s.run(answer, (output) => {
     if (_.isEqual(JSON.parse(output.result), JSON.parse(tests.split('\n')[1]))) {
-      console.log('you won');
       output.result = 'WINNER!';
       res.status(200).send(output);
     } else {
       s.run(code, (output) => {
-        console.log(output);
         res.status(200).send(output);
       });
     }
