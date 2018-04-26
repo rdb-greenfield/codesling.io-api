@@ -1,0 +1,45 @@
+# set notification options
+notifications: 
+  email: false
+
+# specify language
+language: node_js
+
+# specify language options
+node_js:
+  - "9"
+
+# enable services
+services:
+  - postgresql
+
+# begin build steps
+before_install:
+install:
+before_script:
+  # create db
+  - psql -c 'create database codesling;' -U postgres
+  - psql -c "create user root with superuser password '';" -U postgres
+
+  # setup environment
+  - yarn
+  - yarn buildEnv
+  - yarn setup:rest-server
+  - yarn setup:socket-server
+  - yarn setup:services/coderunner-service
+  - yarn db:setup:rest-server
+
+script:
+  # start servers
+  - yarn start &
+  - sleep 10 
+  - yarn test:socket-server
+
+after_success:
+after_failure:
+after_script:
+
+# deployment options
+before_deploy:
+deploy:
+after_deploy:
