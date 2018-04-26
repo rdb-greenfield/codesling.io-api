@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/codesling/codesling.io-api#readme",
   "dependencies": {
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.10",
     "npm-run-all": "^4.1.2"
   },
   "devDependencies": {
