@@ -24,6 +24,8 @@ export default class Rooms {
       room.set('id', roomId);
       room.set('playerOne.text', startingText);
       room.set('playerTwo.text', startingText);
+      room.set('player1Id', null);
+      room.set('player2Id', null);
       this.store.set(roomId, room);
     }
     return room;

@@ -45,3 +45,10 @@ export const serverRun = ({ io, room }, { stdout, player }) => {
 export const serverMessage = ({ io, room }, message) => {
   io.in(room.get('id')).emit('server.message', message);
 };
+
+export const sendPlayers = ({ io, client, room }) => {
+  client.emit('server.sendPlayers', {
+    player1Id: room.get('player1Id'),
+    player2Id: room.get('player2Id'),
+  });
+};
