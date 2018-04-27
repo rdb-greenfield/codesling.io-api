@@ -63,15 +63,15 @@ const clientRun = async ({ io, room }, payload) => {
     text, player, tests, fnName,
   } = payload;
   const url = process.env.CODERUNNER_SERVICE_URL;
-  const cases = tests.split('\n');
-  const tuples = [];
-  for (let i = 0; i < cases.length; i += 2) {
-    tuples.push([cases[i], cases[i + 1]]);
-  }
   try {
     const { data } = await axios.post(`${url}/submit-code`, { code: text });
     let stdout = data;
     if (fnName) {
+      const cases = tests.split('\n');
+      const tuples = [];
+      for (let i = 0; i < cases.length; i += 2) {
+        tuples.push([cases[i], cases[i + 1]]);
+      }
       let allPass = true;
       for (let i = 0; i < tuples.length; i++) {
         const testCase = `${text}\n${fnName}(${tuples[i][0]});`;
