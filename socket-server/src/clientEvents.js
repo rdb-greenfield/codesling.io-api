@@ -8,6 +8,7 @@ import {
   serverLeave,
   serverRun,
   serverMessage,
+  sendPlayers,
 } from './serverEvents';
 import _ from 'lodash';
 
@@ -25,6 +26,9 @@ import _ from 'lodash';
 const clientReady = ({ io, client, room }, payload) => {
   // payload contains the challenge object
   success('client ready heard');
+  payload.player === 1
+    ? room.set('player1Id', payload.playerID)
+    : room.set('player2Id', payload.playerID);
   serverInitialState({ io, client, room }, payload);
 };
 
@@ -38,6 +42,11 @@ const clientOneUpdate = ({ io, client, room }, payload) => {
     room,
     player,
   });
+};
+
+const gameFinished = ({ io, client, room }) => {
+  success('game finished');
+  sendPlayers({ io, client, room });
 };
 
 const clientTwoUpdate = ({ io, client, room }, payload) => {
@@ -81,7 +90,7 @@ const clientRun = async ({ io, room }, payload) => {
         }
       }
       if (allPass) {
-        stdout = { result: 'WINNER!' };
+        stdout = { result: 'GAME OVER!' };
       }
     }
     serverRun({ io, room }, { stdout, player });
@@ -108,6 +117,7 @@ const clientEmitters = {
   'client.disconnect': clientDisconnect,
   'client.run': clientRun,
   'client.message': clientMessage,
+  'game.finished': gameFinished,
 };
 
 export default clientEmitters;
