@@ -90,7 +90,7 @@ const clientRun = async ({ io, room }, payload) => {
         }
       }
       if (allPass) {
-        stdout = { result: 'WINNER!' };
+        stdout = { result: 'GAME OVER!' };
       }
     }
     serverRun({ io, room }, { stdout, player });

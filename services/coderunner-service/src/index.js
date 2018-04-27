@@ -13,31 +13,10 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.post('/submit-code', (req, res) => {
-<<<<<<< HEAD
   const { code } = req.body;
   s.run(code, (output) => {
     res.status(200).send(output);
   });
-=======
-  const { code, tests, fnName } = req.body;
-  if (!fnName) {
-    s.run(code, (output) => {
-      res.status(200).send(output);
-    });
-  } else {
-    const answer = `${code}\n${fnName}(${tests.split('\n')[0]});`;
-    s.run(answer, (output) => {
-      if (_.isEqual(JSON.parse(output.result), JSON.parse(tests.split('\n')[1]))) {
-        output.result = 'GAME OVER!';
-        res.status(200).send(output);
-      } else {
-        s.run(code, (output) => {
-          res.status(200).send(output);
-        });
-      }
-    });
-  }
->>>>>>> Work on successful solution
 });
 
 app.listen(PORT, success(`coderunner-service is listening on port ${PORT}`));
