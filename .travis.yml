@@ -13,6 +13,11 @@ node_js:
 services:
   - postgresql
 
+# cache
+cache: 
+  directories:
+    - node_modules
+
 # begin build steps
 before_install:
 install:
@@ -28,12 +33,18 @@ before_script:
   - yarn setup:socket-server
   - yarn setup:services/coderunner-service
   - yarn db:setup:rest-server
-
-script:
   # start servers
   - yarn start &
   - sleep 10 
+
+script:
+  # run tests
   - yarn test:socket-server
+  # find all node_modules folders and compress
+  - find . -type d -name "*node_modules*" -prune -o -type f -print | zip latest.zip -@
+  - mkdir -p dpl_cd_upload
+  - mv latest.zip dpl_cd_upload/latest.zip
+
 
 after_success:
 after_failure:
@@ -42,4 +53,40 @@ after_script:
 # deployment options
 before_deploy:
 deploy:
+# deploy settings for s3
+- provider: s3
+  # defined and encrypted in travis.ci
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  # specify where files are stored locally for upload
+  local_dir: dpl_cd_upload
+  # prevents travis from deleting build artifiacts
+  skip_cleanup: true
+  on: &2
+    repo: rdb-greenfield/codesling.io-api
+    branch: travis
+  # s3 bucket name
+  bucket: hrla21-legacy-codesling
+  # specify aws region, e.g. us-west-1 (Northern California)
+  region: us-west-1
+
+# deploy settings for codedeploy
+- provider: codedeploy
+  # defined and encrypted in travis.ci
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  # s3 bucket name
+  bucket: hrla21-legacy-codesling
+  # zip file name
+  key: latest.zip
+  # file type
+  bundle_type: zip
+  # name of code deploy application
+  application: legacy-codesling
+  # name of deployment group
+  deployment_group: legacy-codesling
+  # specify aws region, e.g. us-west-1 (Northern California)
+  region: us-west-1
+  on: *2
+  
 after_deploy:
