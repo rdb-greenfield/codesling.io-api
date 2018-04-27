@@ -26,6 +26,7 @@ import _ from 'lodash';
 const clientReady = ({ io, client, room }, payload) => {
   // payload contains the challenge object
   success('client ready heard');
+  console.log('ready', payload);
   payload.player === 1
     ? room.set('player1Id', payload.playerID)
     : room.set('player2Id', payload.playerID);
@@ -102,8 +103,11 @@ const clientRun = async ({ io, room }, payload) => {
 const clientMessage = async ({ io, room }, payload) => {
   success('client message heard');
   const url = process.env.REST_SERVER_URL;
+  const sender = room.get(`player${payload.sender}Id`);
+  const receiver = payload.sender === 1 ? room.get('player2Id') : room.get('player1Id');
+  const message = { sender_id: sender, receiver_id: receiver, content: payload.content };
   try {
-    const { data } = await axios.post(`${url}/messages/`, payload);
+    const { data } = await axios.post(`${url}/api/messages/`, message);
     serverMessage({ io, room }, data);
   } catch (e) {
     success('error saving message to the database. e = ', e);
