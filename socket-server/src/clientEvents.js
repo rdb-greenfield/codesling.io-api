@@ -75,7 +75,9 @@ const clientRun = async ({ io, room }, payload) => {
     for (let i = 0; i < tuples.length; i++) {
       const testCase = `${text}\n${fnName}(${tuples[i][0]});`;
       const result = await axios.post(`${url}/submit-code`, { code: testCase });
-      allPass = _.isEqual(JSON.parse(result.data.result), JSON.parse(tuples[i][1]));
+      if (allPass) {
+        allPass = _.isEqual(JSON.parse(result.data.result), JSON.parse(tuples[i][1]));
+      }
     }
     if (allPass) {
       stdout = { result: 'WINNER!' };
