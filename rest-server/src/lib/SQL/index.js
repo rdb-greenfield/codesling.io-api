@@ -64,15 +64,80 @@ export const createUserTable = async () => {
       username VARCHAR(255) NOT NULL,
       password VARCHAR(255) NOT NULL,
       clout INT,
-      kdr INT,
+      wins INT,
+      games INT,
+      kdr NUMERIC,
       CONSTRAINT users_pk 
         PRIMARY KEY(id)
-      )
-      `
+      )`
     );
     success("successfully created users table");
   } catch (err) {
     error("error creating users table ", err);
+  }
+  try {
+    await db.query(
+      `
+      INSERT INTO users (email, username, password, clout, wins, games, kdr)
+      VALUES ('tyler@gmail.com', 'tyler', '$2a$10$StTSzM5e5Ie0sW82wx4QzO7gB5O7GXOnjf7VCHE1E2KAXTi3mpBZK', 0, 0, 0, 0);
+      `
+    );
+  } catch (err) {
+    error("error inserting user", err);
+  }
+  try {
+    await db.query(
+      `
+      INSERT INTO users (email, username, password, clout, wins, games, kdr)
+      VALUES ('mark@gmail.com', 'mark', '$2a$10$StTSzM5e5Ie0sW82wx4QzO7gB5O7GXOnjf7VCHE1E2KAXTi3mpBZK', 0, 0, 0, 0);
+      `
+    );
+  } catch (err) {
+    error("error inserting user", err);
+  }
+  try {
+    await db.query(
+      `
+      INSERT INTO users (email, username, password, clout, wins, games, kdr)
+      VALUES ('warren@gmail.com', 'warren', '$2a$10$StTSzM5e5Ie0sW82wx4QzO7gB5O7GXOnjf7VCHE1E2KAXTi3mpBZK', 0, 0, 0, 0);
+      `
+    );
+  } catch (err) {
+    error("error inserting user", err);
+  }
+  try {
+    await db.query(
+      `CREATE OR REPLACE FUNCTION update_kdr_func()
+        RETURNS trigger AS
+      $BODY$
+      BEGIN
+        IF NEW.games <> OLD.games THEN
+        UPDATE users
+        SET kdr = NEW.wins/NEW.games::float
+        WHERE users.id=OLD.id;
+        END IF;
+
+        RETURN NEW;
+      END;
+      $BODY$
+      LANGUAGE PLPGSQL;`
+    );
+    success("successfully created update function");
+  } catch (err) {
+    error("error creating update function", err);
+  }
+  try {
+    await db.query(
+      `CREATE TRIGGER update_kdr
+      AFTER UPDATE
+      ON users
+      FOR EACH ROW
+      EXECUTE PROCEDURE update_kdr_func();
+      `
+    );
+    success("successfully created trigger");
+  } catch (err) {
+    error("error creating trigger", err);
   }
 };
 
@@ -107,6 +172,36 @@ export const createChallengeTable = async () => {
     success("successfully created challenges table");
   } catch (err) {
     error("error creating challenges table ", err);
+  }
+  try {
+    await db.query(
+      `
+      INSERT INTO challenges (title, content, difficulty, rating, fn_name)
+      VALUES ('Tylers Challenge', 'Add two to an integer', 1, 0, 'addTwo');
+      `
+    );
+  } catch (err) {
+    error("error inserting challenge", err);
+  }
+  try {
+    await db.query(
+      `
+      INSERT INTO challenges (title, content, difficulty, rating, fn_name)
+      VALUES ('Marks Challenge', 'Add three to an integer', 1, 0, 'addThree');
+      `
+    );
+  } catch (err) {
+    error("error inserting challenge", err);
+  }
+  try {
+    await db.query(
+      `
+      INSERT INTO challenges (title, content, difficulty, rating, fn_name)
+      VALUES ('Warrens Challenge', 'Add four to an integer', 1, 0, 'addFour');
+      `
+    );
+  } catch (err) {
+    error("error inserting challenge", err);
   }
 };
 
@@ -220,6 +315,39 @@ export const createTestCaseTable = async () => {
     success("successfully created test cases table");
   } catch (err) {
     error("error creating test cases table ", err);
+  }
+  try {
+    // INSERT TEST CASES HERE!!!!
+    await db.query(
+      `
+      INSERT INTO testCases (tests, challenge_id)
+      VALUES ('2\n4\n3\n5', 1);
+      `
+    );
+  } catch (err) {
+    error("error inserting test case", err);
+  }
+  try {
+    // INSERT TEST CASES HERE!!!!
+    await db.query(
+      `
+      INSERT INTO testCases (tests, challenge_id)
+      VALUES ('2\n5\n3\n6', 2);
+      `
+    );
+  } catch (err) {
+    error("error inserting test case", err);
+  }
+  try {
+    // INSERT TEST CASES HERE!!!!
+    await db.query(
+      `
+      INSERT INTO testCases (tests, challenge_id)
+      VALUES ('2\n6', 3);
+      `
+    );
+  } catch (err) {
+    error("error inserting test case", err);
   }
 };
 
