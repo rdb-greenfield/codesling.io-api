@@ -3,7 +3,7 @@
  *  Server emissions
  *
  */
-export const serverInitialState = ({ client, room }, { challenge }) => {
+export const serverInitialState = ({ io, client, room }, { challenge }) => {
   if (!room.get('challenge')) {
     room.set('challenge', challenge);
     client.emit('server.initialState', {
@@ -18,6 +18,9 @@ export const serverInitialState = ({ client, room }, { challenge }) => {
       playerOneText: room.get('playerOne.text'),
       playerTwoText: room.get('playerTwo.text'),
       challenge: room.get('challenge'),
+    });
+    io.sockets.emit('start.timer', {
+      start: true,
     });
   }
 };
