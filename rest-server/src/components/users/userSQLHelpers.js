@@ -13,3 +13,9 @@ export const fetchUserHelper = `
   WHERE
     id=$1
 `;
+
+export const updateGames = `
+  UPDATE users
+  SET (clout, wins, games) = (clout + $2, wins + $3, games + 1)
+  WHERE id = $1
+`;
