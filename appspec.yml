@@ -5,3 +5,26 @@ os: linux
 files:
   - source: ./
     destination: /home/ubuntu/legacy-codesling-api
+
+permissions: 
+  # specify target directory for permissions
+  - object: /
+    # specify a pattern to apply permssions, 
+    # if not specified or specified with "**", the permissions are applied to all matching files or directories, depending on the type
+    pattern: "**"
+    # specify any exceptions to the above pattern
+    except: 
+    # name of the owner of object
+    owner: "ec2-user"
+    group: ""
+    # specify octal mode - 644 represents read and write permissions
+    mode: 644
+    acls:
+    context:
+      user:
+      type:
+      range:
+    type:
+
+
+hooks: 
