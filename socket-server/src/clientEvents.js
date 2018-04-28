@@ -9,6 +9,7 @@ import {
   serverRun,
   serverMessage,
   sendPlayers,
+  startTimer,
 } from './serverEvents';
 import _ from 'lodash';
 
@@ -26,7 +27,6 @@ import _ from 'lodash';
 const clientReady = ({ io, client, room }, payload) => {
   // payload contains the challenge object
   success('client ready heard');
-  console.log('ready', payload);
   payload.player === 1
     ? room.set('player1Id', payload.playerID)
     : room.set('player2Id', payload.playerID);
