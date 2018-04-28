@@ -43,7 +43,6 @@ export const serverRun = ({ io, room }, { stdout, player }) => {
 };
 
 export const serverMessage = ({ io, room }, message) => {
-  console.log('serverMessage', message);
   io.in(room.get('id')).emit('server.message', message);
 };
 
